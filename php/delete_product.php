@@ -1,6 +1,6 @@
 <?php
 	include_once $_SERVER['DOCUMENT_ROOT']. '/config/database.php';
-	include_once $_SERVER['DOCUMENT_ROOT']. '/objects/product.php';
+	include_once $_SERVER['DOCUMENT_ROOT']. '/model/product.php';
 	
 	$database = new Database();
 	$db = $database->getConnection();

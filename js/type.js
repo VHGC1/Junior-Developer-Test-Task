@@ -1,4 +1,3 @@
-
 let select = document.getElementById("productType");
 
 type.innerHTML = `

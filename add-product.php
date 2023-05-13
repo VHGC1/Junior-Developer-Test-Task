@@ -1,3 +1,27 @@
+<?php
+include_once $_SERVER['DOCUMENT_ROOT']. '/config/database.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/model/product.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/model/book.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/model/dvd.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/model/furniture.php';
+
+$database = new Database();
+$db = $database->getConnection();
+
+if ($_POST) {
+  $newObject = new $_POST['Type-Switcher']($db);
+  
+  try {
+    if($newObject->setSpecs($_POST)) {
+      header('Location: /index.php');
+    } 
+  }
+  catch (Exception $e) {
+    echo "<script>alert('{$e->getMessage()}')</script>";
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +35,7 @@
     <main>
       <form
         id="product_form"
-        action="./php/new_product.php"
+        action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
         method="post"
       >
         <header>

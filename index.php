@@ -1,8 +1,8 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT']. '/config/database.php';
-include_once $_SERVER['DOCUMENT_ROOT']. '/objects/product.php';
-include_once $_SERVER['DOCUMENT_ROOT']. '/objects/view_type.php';
-include_once $_SERVER['DOCUMENT_ROOT']. '/objects/view_products.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/model/product.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/model/view_type.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/model/view_products.php';
 ?>
 
 
@@ -23,7 +23,7 @@ include_once $_SERVER['DOCUMENT_ROOT']. '/objects/view_products.php';
       <header>
         <h1>Product List</h1>
         <div>
-          <a class="button add_button" href="add-product.html">ADD</a>
+          <a class="button add_button" href="add-product.php">ADD</a>
           <button class="button delete_button" value="MASS DELETE" onclick=massDelete()>MASS DELETE</button>
         </div>
       </header>

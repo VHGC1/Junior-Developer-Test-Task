@@ -1,5 +1,6 @@
 <?php
-class Product{
+class Product
+{
   private $conn;
   private $table_name = "products";
 
@@ -9,40 +10,56 @@ class Product{
   public $type;
   public $attribute;
 
-  public function __construct($db){
+  public function __construct($db)
+  {
     $this->conn = $db;
   }
 
-  public function setSku($sku){
+  public function setSku($sku)
+  {
     $this->sku = $sku;
   }
 
-  public function setName($name){
+  public function setName($name)
+  {
     $this->name = $name;
   }
 
-  public function setType($type){
+  public function setType($type)
+  {
     $this->type = $type;
   }
 
-  public function setPrice($price){
+  public function setPrice($price)
+  {
     $this->price = $price;
   }
 
-  public function setWeigth($weight){
+  public function setWeigth($weight)
+  {
     $this->attribute = $weight;
   }
 
-  public function setSize($size){
+  public function setSize($size)
+  {
     $this->attribute = $size;
   }
 
-  public function setDimensions($height, $width, $length){
+  public function setDimensions($height, $width, $length)
+  {
     $this->attribute = "{$height}x{$width}x{$length}";
   }
 
-  function create(){
-    
+  function create()
+  {
+    $arrProducts = $this->getProducts();
+
+    foreach ($arrProducts as $products) {
+      if ($products['sku'] == $this->sku) {
+        throw new Exception('The sku must be unique');
+      }
+    }
+
     $query = "INSERT INTO
       " . $this->table_name . "
       SET
@@ -55,7 +72,7 @@ class Product{
     $this->price = htmlspecialchars(strip_tags($this->price));
     $this->type = htmlspecialchars(strip_tags($this->type));
     $this->attribute = htmlspecialchars(strip_tags($this->attribute));
-    
+
     $stmt->bindParam(":sku", $this->sku);
     $stmt->bindParam(":name", $this->name);
     $stmt->bindParam(":price", $this->price);
@@ -69,16 +86,17 @@ class Product{
     }
   }
 
-  function delete($id){
-    
+  function delete($id)
+  {
     $query = "DELETE FROM products WHERE id='{$id}'";
-    
+
     $stmt = $this->conn->prepare($query);
-   
+
     $stmt->execute();
   }
 
-  function getProducts(){
+  function getProducts()
+  {
     $products = [];
 
     $query = "SELECT * FROM products";
@@ -90,57 +108,5 @@ class Product{
       array_push($products, $row);
     }
     return $products;
-  }  
-}
-
-class book extends Product{
-  function __construct($db){
-    parent::__construct($db);
-  }
-
-  public function getSpecs($arr){
-    $this->setSku($arr['sku']);
-    $this->setName($arr['name']);
-    $this->setPrice(number_format((float)$arr['price'],2));
-    $this->setType($arr['Type-Switcher'] . "s");
-    $this->setWeigth($arr['weight']);
-    var_dump($arr);
-
-    return $this->create();
-  } 
-}
-
-class dvd extends Product {
-  function __construct($db){
-    parent::__construct($db);
-  }
-
-  public function getSpecs($arr){
-    $this->setSku($arr['sku']);
-    $this->setName($arr['name']);
-    $this->setPrice(number_format((float)$arr['price'],2));
-    $this->setType($arr['Type-Switcher'] . "s");
-    $this->setSize($arr['size']);
-
-    return $this->create();
   }
 }
-
-class furniture extends Product {
-  function __construct($db){
-    parent::__construct($db);
-  }
-
-  public function getSpecs($arr){
-    $this->setSku($arr['sku']);
-    $this->setName($arr['name']);
-    $this->setPrice(number_format((float)$arr['price'],2));
-    $this->setType($arr['Type-Switcher'] . "s");
-    $this->setDimensions($arr['height'],$arr['width'],$arr['length']);
-
-    return $this->create();
-  }
-}
-
-
- 
